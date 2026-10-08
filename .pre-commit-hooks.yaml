@@ -61,6 +61,7 @@
   additional_dependencies:
     - mdformat
     - mdformat-gfm
+    - mdformat-mkdocs # admonitions, content tabs
     - mdformat-frontmatter
     - mdformat-toc
     - mdformat-config # json/toml/yaml code blocks
