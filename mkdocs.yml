@@ -42,6 +42,7 @@ nav:
   - Home: index.md
   - Hooks:
       - check-agent-files-tokens: hooks/check-agent-files-tokens.md
+      - check-catalog-info: hooks/check-catalog-info.md
       - check-symlinks-outside-repo: hooks/check-symlinks-outside-repo.md
       - check-yaml-schema: hooks/check-yaml-schema.md
       - mdformat: hooks/mdformat.md

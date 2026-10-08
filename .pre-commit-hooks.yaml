@@ -53,6 +53,23 @@
     - manual
 # --8<-- [end:check-yaml-schema]
 
+# --8<-- [start:check-catalog-info]
+- id: check-catalog-info
+  name: check Backstage catalog-info.yaml
+  description: >-
+    requires a root catalog-info.yaml with a schema header, metadata.name and
+    metadata.namespace, and keeps its endoflife.date/products annotation in sync
+    with the languages and tools used in the repo.
+  entry: check-catalog-info
+  language: python
+  always_run: true
+  pass_filenames: false
+  stages:
+    - pre-commit
+    - pre-push
+    - manual
+# --8<-- [end:check-catalog-info]
+
 # --8<-- [start:mdformat]
 - id: mdformat
   name: format Markdown

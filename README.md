@@ -10,12 +10,13 @@ Full documentation: <https://dimkagorhover.github.io/pre-commit-hooks/>
 
 ## Hooks
 
-| Hook                                                                       | What it does                                                           |
-| -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [`check-symlinks-outside-repo`](docs/hooks/check-symlinks-outside-repo.md) | Forbids symlinks whose target resolves outside the repository          |
-| [`check-agent-files-tokens`](docs/hooks/check-agent-files-tokens.md)       | Keeps `AGENTS.md`, `CLAUDE.md` and friends under a token budget        |
-| [`check-yaml-schema`](docs/hooks/check-yaml-schema.md)                     | Validates YAML against the schema in its `yaml-language-server` header |
-| [`mdformat`](docs/hooks/mdformat.md)                                       | Formats Markdown with a shared mdformat plugin set                     |
+| Hook                                                                       | What it does                                                                     |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| [`check-symlinks-outside-repo`](docs/hooks/check-symlinks-outside-repo.md) | Forbids symlinks whose target resolves outside the repository                    |
+| [`check-agent-files-tokens`](docs/hooks/check-agent-files-tokens.md)       | Keeps `AGENTS.md`, `CLAUDE.md` and friends under a token budget                  |
+| [`check-catalog-info`](docs/hooks/check-catalog-info.md)                   | Requires a Backstage `catalog-info.yaml` and syncs its endoflife.date annotation |
+| [`check-yaml-schema`](docs/hooks/check-yaml-schema.md)                     | Validates YAML against the schema in its `yaml-language-server` header           |
+| [`mdformat`](docs/hooks/mdformat.md)                                       | Formats Markdown with a shared mdformat plugin set                               |
 
 ## Usage
 

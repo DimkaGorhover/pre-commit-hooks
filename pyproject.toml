@@ -10,11 +10,14 @@ dependencies = [
     "click>=8.5.0",
     "jsonschema>=4.18",
     "pyyaml>=6.0.3",
+    "ruamel.yaml>=0.18",
     "tiktoken>=0.12",
+    "tomli>=2; python_version < '3.11'",
 ]
 
 [project.scripts]
 check-agent-files-tokens = "pre_commit_hooks.check_agent_files_tokens:main"
+check-catalog-info = "pre_commit_hooks.check_catalog_info:main"
 check-symlinks-outside-repo = "pre_commit_hooks.check_symlinks_outside_repo:main"
 check-yaml-schema = "pre_commit_hooks.check_yaml_schema:main"
 
