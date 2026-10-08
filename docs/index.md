@@ -3,10 +3,12 @@
 Hooks for [prek](https://github.com/j178/prek) (also compatible with classic
 [pre-commit](https://pre-commit.com)).
 
-| Hook                                                                | What it does                                                    |
-| ------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [check-symlinks-outside-repo](hooks/check-symlinks-outside-repo.md) | Forbids symlinks whose target resolves outside the repository   |
-| [check-agent-files-tokens](hooks/check-agent-files-tokens.md)       | Keeps `AGENTS.md`, `CLAUDE.md` and friends under a token budget |
+| Hook                                                                | What it does                                                           |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [check-symlinks-outside-repo](hooks/check-symlinks-outside-repo.md) | Forbids symlinks whose target resolves outside the repository          |
+| [check-agent-files-tokens](hooks/check-agent-files-tokens.md)       | Keeps `AGENTS.md`, `CLAUDE.md` and friends under a token budget        |
+| [`check-yaml-schema`](hooks/check-yaml-schema.md)                   | Validates YAML against the schema in its `yaml-language-server` header |
+| [`mdformat`](hooks/mdformat.md)                                     | Formats Markdown with a shared mdformat plugin set                     |
 
 ## Quick start
 
@@ -19,6 +21,8 @@ repos:
     hooks:
       - id: check-symlinks-outside-repo
       - id: check-agent-files-tokens
+      - id: check-yaml-schema
+      - id: mdformat
 ```
 
 !!! warning "Pin `rev`"

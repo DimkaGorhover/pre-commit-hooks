@@ -1,0 +1,36 @@
+from __future__ import annotations
+
+import pytest
+from click.testing import CliRunner
+
+from pre_commit_hooks.check_yaml_schema import main
+
+SCHEMA = '{"type": "object", "required": ["name"]}'
+
+
+def run(*args: str) -> int:
+    return CliRunner().invoke(main, args).exit_code
+
+
+@pytest.mark.parametrize(
+    ("content", "expected"),
+    (
+        ("# yaml-language-server: $schema=../schema.json\nname: x\n", 0),
+        ("# yaml-language-server: $schema=../schema.json\nother: x\n", 1),
+        ("# a comment\n# yaml-language-server: $schema=../schema.json\nother: x\n", 1),
+        ("other: x\n", 0),  # no header: skipped
+        ("other: x\n# yaml-language-server: $schema=../schema.json\n", 0),  # header after content: ignored
+        ("# yaml-language-server: $schema=http://example.com/s.json\nname: x\n", 1),
+    ),
+)
+def test_main(tmpdir, content, expected):
+    tmpdir.join("schema.json").write(SCHEMA)
+    f = tmpdir.join("d", "f.yaml")
+    f.write(content, ensure=True)
+    assert run(str(f)) == expected
+
+
+def test_main_missing_local_schema(tmpdir):
+    f = tmpdir.join("f.yaml")
+    f.write("# yaml-language-server: $schema=missing.json\nname: x\n")
+    assert run(str(f)) != 0

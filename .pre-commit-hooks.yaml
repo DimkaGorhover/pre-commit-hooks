@@ -35,3 +35,42 @@
     - pre-push
     - manual
 # --8<-- [end:check-agent-files-tokens]
+
+# --8<-- [start:check-yaml-schema]
+- id: check-yaml-schema
+  name: check YAML against its declared JSON schema
+  description: >-
+    validates YAML files carrying a `# yaml-language-server: $schema=...` header
+    against that schema; files without the header are skipped.
+  entry: check-yaml-schema
+  language: python
+  additional_dependencies:
+    - check-jsonschema
+  types:
+    - yaml
+  stages:
+    - pre-commit
+    - pre-push
+    - manual
+# --8<-- [end:check-yaml-schema]
+
+# --8<-- [start:mdformat]
+- id: mdformat
+  name: format Markdown
+  description: mdformat with a shared plugin set (GFM, front matter, TOC, code blocks).
+  entry: mdformat
+  language: python
+  additional_dependencies:
+    - mdformat
+    - mdformat-gfm
+    - mdformat-frontmatter
+    - mdformat-toc
+    - mdformat-config # json/toml/yaml code blocks
+    - mdformat-ruff # python code blocks
+    - mdformat-shfmt # shell code blocks, needs `shfmt` (or docker) on PATH
+  types:
+    - markdown
+  stages:
+    - pre-commit
+    - manual
+# --8<-- [end:mdformat]

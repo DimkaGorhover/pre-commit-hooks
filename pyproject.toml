@@ -14,9 +14,13 @@ dependencies = [
 [project.scripts]
 check-agent-files-tokens = "pre_commit_hooks.check_agent_files_tokens:main"
 check-symlinks-outside-repo = "pre_commit_hooks.check_symlinks_outside_repo:main"
+check-yaml-schema = "pre_commit_hooks.check_yaml_schema:main"
 
 [dependency-groups]
-dev = ["pytest"]
+dev = [
+    "check-jsonschema>=0.38.2",
+    "pytest",
+]
 docs = [
     "mkdocs>=1.6.1,<2",
     "mkdocs-material>=9.7.7",
