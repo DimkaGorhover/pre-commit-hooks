@@ -8,9 +8,11 @@ license-files = ["LICENSE"]
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.5.0",
+    "tiktoken>=0.12",
 ]
 
 [project.scripts]
+check-agent-files-tokens = "pre_commit_hooks.check_agent_files_tokens:main"
 check-symlinks-outside-repo = "pre_commit_hooks.check_symlinks_outside_repo:main"
 
 [dependency-groups]

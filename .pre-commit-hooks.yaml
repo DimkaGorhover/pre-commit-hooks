@@ -9,3 +9,25 @@
     - pre-commit
     - pre-push
     - manual
+
+- id: check-agent-files-tokens
+  name: check AI agent guideline files token budget
+  description: >-
+    fails when AGENTS.md, CLAUDE.md and similar agent guideline files exceed
+    a token budget (default 2500, o200k_base).
+  entry: check-agent-files-tokens
+  language: python
+  files: (?x)(
+      (^|/)(AGENTS|CLAUDE|GEMINI)(\.local)?\.md$
+      | (^|/)\.github/copilot-instructions\.md$
+      | (^|/)\.github/instructions/[^/]+\.instructions\.md$
+      | (^|/)\.(cursor|windsurf|cline)rules$
+      | (^|/)\.cursor/rules/[^/]+\.mdc$
+      | (^|/)\.claude/rules/[^/]+\.md$
+    )
+  types:
+    - text
+  stages:
+    - pre-commit
+    - pre-push
+    - manual
