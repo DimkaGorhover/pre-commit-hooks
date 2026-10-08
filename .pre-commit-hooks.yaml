@@ -1,0 +1,11 @@
+- id: check-symlinks-outside-repo
+  name: check for symlinks pointing outside repo
+  description: forbids symlinks whose target resolves outside the repository directory.
+  entry: check-symlinks-outside-repo
+  language: python
+  types:
+    - symlink
+  stages:
+    - pre-commit
+    - pre-push
+    - manual
