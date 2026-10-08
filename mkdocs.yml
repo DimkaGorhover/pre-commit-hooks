@@ -45,3 +45,13 @@ nav:
       - check-symlinks-outside-repo: hooks/check-symlinks-outside-repo.md
       - check-yaml-schema: hooks/check-yaml-schema.md
       - mdformat: hooks/mdformat.md
+  - mise-managed hooks:
+      - Overview: mise/index.md
+      - gitleaks: mise/gitleaks.md
+      - ryl: mise/ryl.md
+      - shellcheck: mise/shellcheck.md
+      - shfmt: mise/shfmt.md
+      - ruff: mise/ruff.md
+      - terraform fmt: mise/terraform-fmt.md
+      - terraform validate: mise/terraform-validate.md
+      - tflint: mise/tflint.md

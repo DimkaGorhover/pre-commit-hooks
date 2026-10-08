@@ -44,6 +44,12 @@ Then install the git hook:
     pre-commit install
     ```
 
+## mise-managed hooks
+
+Hooks for third-party tools don't have to come from their upstream hook repos.
+[mise-managed hooks](mise/index.md) shows how to install the tool with mise and
+run it from a `repo: local` hook instead.
+
 ## Building these docs
 
 ```sh
