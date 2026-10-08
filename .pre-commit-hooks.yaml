@@ -27,6 +27,7 @@
       | (^|/)\.(cursor|windsurf|cline)rules$
       | (^|/)\.cursor/rules/[^/]+\.mdc$
       | (^|/)\.claude/rules/[^/]+\.md$
+      | (^|/)\.[^/]+/skills/.+\.md$
     )
   types:
     - text

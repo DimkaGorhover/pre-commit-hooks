@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import re
+from pathlib import Path
+
 import pytest
+import yaml
 from click.testing import CliRunner
 
 from pre_commit_hooks.check_agent_files_tokens import main
@@ -30,6 +34,25 @@ def test_main_max_tokens(tmpdir):
     f.write("word " * 10)
     assert run("--max-tokens", "5", str(f)) == 1
     assert run("--max-tokens", "50", str(f)) == 0
+
+
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    (
+        ("AGENTS.md", True),
+        ("svc/CLAUDE.local.md", True),
+        (".claude/skills/foo/SKILL.md", True),
+        (".agents/skills/foo/references/bar.md", True),
+        ("pkg/.codex/skills/x.md", True),
+        (".claude/skills/foo/script.py", False),
+        ("skills/foo/SKILL.md", False),
+        ("README.md", False),
+    ),
+)
+def test_files_pattern(path, expected):
+    hooks = yaml.safe_load(Path(__file__).parent.parent.joinpath(".pre-commit-hooks.yaml").read_text())
+    (hook,) = (h for h in hooks if h["id"] == "check-agent-files-tokens")
+    assert bool(re.search(hook["files"], path)) is expected
 
 
 def test_main_reports_all_files(tmpdir):

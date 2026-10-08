@@ -14,7 +14,9 @@ repos:
     hooks:
       - id: check-agent-files-tokens
         # optional
-        args: [--max-tokens=4000, --encoding=cl100k_base]
+        args:
+          - --max-tokens=4000
+          - --encoding=cl100k_base
 ```
 
 Runs on the `pre-commit`, `pre-push` and `manual` stages.
@@ -30,6 +32,7 @@ Runs on the `pre-commit`, `pre-push` and `manual` stages.
 | `.cursorrules`, `.cursor/rules/*.mdc`                                       | Cursor         |
 | `.windsurfrules`                                                            | Windsurf       |
 | `.clinerules`                                                               | Cline          |
+| `.<tool>/skills/**/*.md` (e.g. `.claude/skills`, `.agents/skills`)          | Agent skills   |
 
 Root-level and nested files (e.g. `services/api/AGENTS.md`) both match. To check
 other files, override `files:` in your config.
