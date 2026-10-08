@@ -1,0 +1,11 @@
+# https://mdformat.readthedocs.io/en/stable/users/configuration_file.html
+end_of_line = "lf"
+number = false  # if false, mdformat will not number list items and keep "1" for every item
+validate = true
+# options: a list of enabled code formatter languages (default: all installed are enabled)
+codeformatters = [
+  "json",
+  "python",
+  "toml",
+  # "yaml", # too agressive formatter
+]

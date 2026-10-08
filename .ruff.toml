@@ -1,0 +1,6 @@
+# https://docs.astral.sh/ruff/configuration/
+line-length = 120
+
+[lint]
+allowed-confusables = ["ℹ"] # emoji in console output
+select =["I", "E", "W", "F", "UP", "B", "SIM", "C4", "RUF"]

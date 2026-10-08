@@ -1,0 +1,133 @@
+# Uses prek-only features (`repo: builtin`, `groups`); upstream `pre-commit` cannot run this file.
+#
+# Groups: `modify` = hooks that rewrite files, `validate` = read-only checks.
+# In CI run them in order so validation sees formatted files:
+#   prek run --all-files --group modify && prek run --all-files --group validate
+minimum_prek_version: "0.4.11"
+
+default_stages:
+  - pre-commit
+
+repos:
+  - repo: meta # validates this file: flags hooks that match nothing and excludes that exclude nothing
+    hooks:
+      - id: check-hooks-apply
+        groups:
+          - validate
+      - id: check-useless-excludes
+        groups:
+          - validate
+
+  - repo: local
+    hooks:
+      - id: ruff-format
+        groups:
+          - modify
+        name: Ruff Format
+        language: system
+        entry: ruff
+        args:
+          - format
+        types:
+          - python
+
+      - id: ruff-check
+        groups:
+          - modify
+        name: Ruff Check
+        language: system
+        entry: ruff
+        args:
+          - check
+          - --fix
+        types:
+          - python
+
+      - id: mdformat
+        groups:
+          - modify
+        name: Format Markdown
+        language: python
+        entry: mdformat
+        additional_dependencies:
+          - mdformat
+          - mdformat-gfm
+          - mdformat-frontmatter
+          - mdformat-shfmt
+          - mdformat-config
+          - mdformat-ruff
+          - mdformat-toc
+        types:
+          - markdown
+
+      # https://github.com/gitleaks/gitleaks/blob/master/.pre-commit-hooks.yaml
+      - id: gitleaks
+        groups:
+          - validate
+        pass_filenames: false
+        name: Detect hardcoded secrets
+        description: Detect hardcoded secrets using Gitleaks
+        entry: gitleaks
+        args:
+          - git
+          - --pre-commit
+          - --redact
+          - --no-banner
+          - --staged
+          - --verbose
+          - --max-target-megabytes=10
+        language: system
+
+      - id: ryl
+        name: Lint YAML
+        language: system
+        entry: ryl
+        args:
+          - --no-warnings
+        types:
+          - yaml
+        groups:
+          - validate
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: forbid-submodules
+        groups:
+          - validate
+      - id: check-yaml # not builtin: only the upstream hook supports --unsafe
+        groups:
+          - validate
+        args:
+          - --unsafe
+      - id: detect-aws-credentials
+        groups:
+          - validate
+        args:
+          - --allow-missing-credentials
+
+  - repo: builtin
+    hooks:
+      - id: trailing-whitespace
+        groups:
+          - modify
+      - id: check-added-large-files
+        groups:
+          - validate
+      - id: check-case-conflict
+        groups:
+          - validate
+      - id: mixed-line-ending
+        groups:
+          - modify
+        args:
+          - --fix=lf # Enforce Linux/macOS style (LF)
+      - id: end-of-file-fixer
+        groups:
+          - modify
+      - id: detect-private-key
+        groups:
+          - validate
+      - id: check-merge-conflict
+        groups:
+          - validate
