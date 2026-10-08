@@ -1,0 +1,30 @@
+name: docs
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - docs/**
+      - mkdocs.yml
+      - pyproject.toml
+      - uv.lock
+      - .github/workflows/docs.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write # mkdocs gh-deploy pushes to the gh-pages branch
+
+concurrency:
+  group: docs
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - run: uv run --only-group docs mkdocs gh-deploy --force
+        env:
+          NO_MKDOCS_2_WARNING: "1" # mkdocs is pinned <2 in pyproject.toml

@@ -52,6 +52,7 @@ repos:
         additional_dependencies:
           - mdformat
           - mdformat-gfm
+          - mdformat-mkdocs # admonitions, content tabs
           - mdformat-frontmatter
           - mdformat-shfmt
           - mdformat-config

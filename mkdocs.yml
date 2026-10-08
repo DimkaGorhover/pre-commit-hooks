@@ -1,0 +1,45 @@
+site_name: Pre-commit Hooks
+site_description: My pre-commit hooks.
+repo_url: https://github.com/DimkaGorhover/pre-commit-hooks
+edit_uri: edit/master/docs/
+strict: true
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - navigation.sections
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: [.] # repo root: mise tasks and CI run mkdocs from there
+      check_paths: true # fail the build on a missing snippet
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Hooks:
+      - check-symlinks-outside-repo: hooks/check-symlinks-outside-repo.md
+      - check-agent-files-tokens: hooks/check-agent-files-tokens.md

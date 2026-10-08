@@ -1,3 +1,4 @@
+# --8<-- [start:check-symlinks-outside-repo]
 - id: check-symlinks-outside-repo
   name: check for symlinks pointing outside repo
   description: forbids symlinks whose target resolves outside the repository directory.
@@ -9,7 +10,9 @@
     - pre-commit
     - pre-push
     - manual
+# --8<-- [end:check-symlinks-outside-repo]
 
+# --8<-- [start:check-agent-files-tokens]
 - id: check-agent-files-tokens
   name: check AI agent guideline files token budget
   description: >-
@@ -31,3 +34,4 @@
     - pre-commit
     - pre-push
     - manual
+# --8<-- [end:check-agent-files-tokens]
