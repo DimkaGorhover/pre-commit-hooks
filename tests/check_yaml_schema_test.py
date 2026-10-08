@@ -34,3 +34,19 @@ def test_main_missing_local_schema(tmpdir):
     f = tmpdir.join("f.yaml")
     f.write("# yaml-language-server: $schema=missing.json\nname: x\n")
     assert run(str(f)) != 0
+
+
+def test_main_yaml_1_2_scalars(tmpdir):
+    tmpdir.join("schema.json").write(
+        '{"required": ["on"], "properties": {"d": {"type": "string"}, "y": {"type": "string"}}}'
+    )
+    f = tmpdir.join("f.yaml")
+    f.write("# yaml-language-server: $schema=schema.json\non: x\nd: 2024-01-01\ny: yes\n")
+    assert run(str(f)) == 0
+
+
+def test_main_invalid_yaml(tmpdir):
+    tmpdir.join("schema.json").write(SCHEMA)
+    f = tmpdir.join("f.yaml")
+    f.write("# yaml-language-server: $schema=schema.json\nname: [x\n")
+    assert run(str(f)) == 1

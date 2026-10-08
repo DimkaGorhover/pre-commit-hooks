@@ -44,8 +44,6 @@
     against that schema; files without the header are skipped.
   entry: check-yaml-schema
   language: python
-  additional_dependencies:
-    - check-jsonschema
   types:
     - yaml
   stages:
