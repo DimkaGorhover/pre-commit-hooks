@@ -41,7 +41,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Hooks:
-      - check-symlinks-outside-repo: hooks/check-symlinks-outside-repo.md
       - check-agent-files-tokens: hooks/check-agent-files-tokens.md
+      - check-symlinks-outside-repo: hooks/check-symlinks-outside-repo.md
       - check-yaml-schema: hooks/check-yaml-schema.md
       - mdformat: hooks/mdformat.md
