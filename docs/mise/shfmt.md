@@ -1,8 +1,24 @@
 # shfmt
 
-Formats shell scripts. Replaces
-[pre-commit-shfmt](https://github.com/scop/pre-commit-shfmt), which builds shfmt
-with Go or runs it in Docker.
+Formats shell scripts with [shfmt](https://github.com/mvdan/sh). mise installs
+the binary directly, so the hook needs neither Python, Go nor Docker.
+
+## Replaces
+
+The usual upstream hook,
+[pre-commit-shfmt](https://github.com/scop/pre-commit-shfmt), installs shfmt
+through a Python wheel:
+
+```yaml
+repos:
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.14.1-1
+    hooks:
+      - id: shfmt # or shfmt-src (Go build), shfmt-docker (Docker image)
+```
+
+It runs the same shfmt with `--write` and reads the same `.editorconfig`. Swap
+it for the local hook below.
 
 ## Hook
 
