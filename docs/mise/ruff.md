@@ -45,4 +45,15 @@ repos:
     mise use ruff
     ```
 
-Configure ruff in `ruff.toml`, `.ruff.toml` or `pyproject.toml`.
+## Config
+
+ruff reads `ruff.toml`, `.ruff.toml` or `pyproject.toml`. Set up a `.ruff.toml`
+at the repo root: it keeps ruff config out of `pyproject.toml` and works in
+repos without one. This repo's config:
+
+```toml title=".ruff.toml"
+--8<-- ".ruff.toml"
+```
+
+`select` turns on rule sets beyond ruff's default (`E4`, `E7`, `E9`, `F`); see the
+[rules list](https://docs.astral.sh/ruff/rules/).
