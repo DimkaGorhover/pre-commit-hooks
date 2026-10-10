@@ -56,10 +56,12 @@ run = "prek run --all-files --cd {{config_root}}"
 
 !!! tip "Tools not on `PATH`"
 
-    `language: system` needs the binary on `PATH`. That holds in a shell with
-    `mise activate`. If commits come from a GUI client without it, prefix the
-    entry with `mise exec --`, e.g. `entry: mise exec -- ryl`. mise then
-    resolves the version from `mise.toml` itself.
+```
+`language: system` needs the binary on `PATH`. That holds in a shell with
+`mise activate`. If commits come from a GUI client without it, prefix the
+entry with `mise exec --`, e.g. `entry: mise exec -- ryl`. mise then
+resolves the version from `mise.toml` itself.
+```
 
 ## Hooks
 
@@ -70,6 +72,7 @@ run = "prek run --all-files --cd {{config_root}}"
 | [shellcheck](shellcheck.md)                 | [shellcheck](https://github.com/koalaman/shellcheck)  | `shellcheck-py/shellcheck-py`                            |
 | [shfmt](shfmt.md)                           | [shfmt](https://github.com/mvdan/sh)                  | `scop/pre-commit-shfmt`                                  |
 | [ruff](ruff.md)                             | [ruff](https://github.com/astral-sh/ruff)             | `astral-sh/ruff-pre-commit`                              |
+| [ty](ty.md)                                 | [ty](https://github.com/astral-sh/ty)                 | `mirrors-mypy`, pyright                                  |
 | [terraform fmt](terraform-fmt.md)           | [terraform](https://github.com/hashicorp/terraform)   | `antonbabenko/pre-commit-terraform` `terraform_fmt`      |
 | [terraform validate](terraform-validate.md) | [terraform](https://github.com/hashicorp/terraform)   | `antonbabenko/pre-commit-terraform` `terraform_validate` |
 | [tflint](tflint.md)                         | [tflint](https://github.com/terraform-linters/tflint) | `antonbabenko/pre-commit-terraform` `terraform_tflint`   |

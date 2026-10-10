@@ -53,6 +53,7 @@ nav:
       - shellcheck: mise/shellcheck.md
       - shfmt: mise/shfmt.md
       - ruff: mise/ruff.md
+      - ty: mise/ty.md
       - terraform fmt: mise/terraform-fmt.md
       - terraform validate: mise/terraform-validate.md
       - tflint: mise/tflint.md

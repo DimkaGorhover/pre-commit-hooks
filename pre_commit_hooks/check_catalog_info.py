@@ -17,6 +17,7 @@ from itertools import takewhile
 
 import click
 from ruamel.yaml import YAML
+from ruamel.yaml.comments import CommentedMap
 from ruamel.yaml.error import YAMLError
 
 from pre_commit_hooks.util import project_dir
@@ -24,7 +25,7 @@ from pre_commit_hooks.util import project_dir
 if sys.version_info >= (3, 11):
     import tomllib
 else:
-    import tomli as tomllib
+    import tomli as tomllib  # ty: ignore[unresolved-import]
 
 CATALOG = "catalog-info.yaml"
 HEADER = "# yaml-language-server: $schema=https://json.schemastore.org/catalog-info.json"
@@ -320,7 +321,7 @@ def resolve(
             continue
         if version and rels is None:  # offline, nothing cached: a guess may fill a gap, never overwrite
             fallback[product] = to_cycle(version, None)
-        elif version:
+        elif version and rels is not None:
             pinned[product] = to_cycle(version, [r["name"] for r in rels])
         elif rels:
             fallback[product] = latest(rels)
@@ -360,7 +361,7 @@ def check_cycles(products: dict[str, str], offline: bool, ttl: int, errors: list
             errors.append(f"{product}@{cycle}: unknown cycle, see {API.format(product)}")
 
 
-def set_annotation(meta: dict, value: str) -> None:
+def set_annotation(meta: CommentedMap, value: str) -> None:
     annotations = meta.get("annotations")
     if annotations is None:
         keys = list(meta)

@@ -6,6 +6,7 @@ import re
 import sys
 import urllib.request
 from collections import defaultdict
+from typing import Any
 
 import click
 import jsonschema
@@ -47,7 +48,7 @@ def find_schema(filename: str) -> str | None:
     return None
 
 
-def load_json(uri: str) -> object:
+def load_json(uri: str) -> Any:
     if uri.startswith("https://"):
         with urllib.request.urlopen(uri, timeout=30) as r:
             return json.load(r)

@@ -43,6 +43,18 @@ repos:
         types:
           - python
 
+      - id: ty
+        groups:
+          - validate
+        name: Type Check (ty)
+        language: system
+        entry: ty
+        args:
+          - check
+        pass_filenames: false # whole project: errors span files
+        types:
+          - python
+
       - id: mdformat
         groups:
           - modify

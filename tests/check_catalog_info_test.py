@@ -7,6 +7,7 @@ import tempfile
 import time
 import urllib.error
 import urllib.request
+from email.message import Message
 
 import pytest
 from click.testing import CliRunner
@@ -44,6 +45,12 @@ def seed(product: str, cycles: list[str], eol: tuple[str, ...] = ()) -> str:
     with open(path, "w") as f:
         json.dump({"result": {"releases": releases}}, f)
     return path
+
+
+def newest(product: str, ttl: int, offline: bool = False) -> str:
+    rels = cci.releases(product, ttl, offline)
+    assert rels is not None
+    return rels[0]["name"]
 
 
 def serve_body(monkeypatch, body: bytes) -> None:
@@ -185,15 +192,15 @@ def test_header_must_be_in_first_comment_block(repo):
 
 
 def test_releases_uses_fresh_cache(repo):
-    assert cci.releases("gitlab", 1000)[0]["name"] == "19.3"  # urlopen would raise
+    assert newest("gitlab", 1000) == "19.3"  # urlopen would raise
 
 
 def test_releases_refetches_stale_entry(repo, monkeypatch):
     path = seed("gitlab", ["19.2"])
     os.utime(path, (time.time() - 100, time.time() - 100))
     serve(monkeypatch, ["19.3"])
-    assert cci.releases("gitlab", 1000)[0]["name"] == "19.2"  # still fresh
-    assert cci.releases("gitlab", 10)[0]["name"] == "19.3"  # stale: refetched
+    assert newest("gitlab", 1000) == "19.2"  # still fresh
+    assert newest("gitlab", 10) == "19.3"  # stale: refetched
     with open(path) as f:
         assert json.load(f)["result"]["releases"][0]["name"] == "19.3"
 
@@ -205,7 +212,7 @@ def test_releases_rejects_bad_name(repo):
 
 def test_releases_404(repo, monkeypatch):
     def not_found(url, timeout):
-        raise urllib.error.HTTPError(url, 404, "Not Found", {}, None)
+        raise urllib.error.HTTPError(url, 404, "Not Found", Message(), None)
 
     monkeypatch.setattr(urllib.request, "urlopen", not_found)
     with pytest.raises(cci.UnknownProduct):
@@ -253,13 +260,13 @@ def test_releases_falls_back_to_stale_cache(repo, monkeypatch):
         raise urllib.error.URLError("down")
 
     monkeypatch.setattr(urllib.request, "urlopen", down)
-    assert cci.releases("gitlab", 10)[0]["name"] == "19.2"
+    assert newest("gitlab", 10) == "19.2"
 
 
 def test_releases_offline(repo):
     path = seed("gitlab", ["19.2"])
     os.utime(path, (0, 0))  # ancient, still used offline
-    assert cci.releases("gitlab", 10, offline=True)[0]["name"] == "19.2"
+    assert newest("gitlab", 10, offline=True) == "19.2"
     assert cci.releases("ruby", 10, offline=True) is None  # nothing cached, no fetch
 
 
@@ -267,7 +274,7 @@ def test_broken_cache_file_is_refetched(repo, monkeypatch):
     with open(os.path.join(cci.cache_dir(), "gitlab.json"), "w") as f:
         f.write("[]")
     serve(monkeypatch, ["19.3"])
-    assert cci.releases("gitlab", 1000)[0]["name"] == "19.3"
+    assert newest("gitlab", 1000) == "19.3"
 
 
 def test_tool_pins(repo):
@@ -448,7 +455,7 @@ def test_invalid_annotation(repo, value, message):
 
 def test_unknown_product(repo, monkeypatch):
     def not_found(url, timeout):
-        raise urllib.error.HTTPError(url, 404, "Not Found", {}, None)
+        raise urllib.error.HTTPError(url, 404, "Not Found", Message(), None)
 
     monkeypatch.setattr(urllib.request, "urlopen", not_found)
     write(repo, {"catalog-info.yaml": annotated("nope@1")})
@@ -575,7 +582,7 @@ def test_cache_dir_symlink_is_ignored(repo, monkeypatch, tmp_path):
     os.rename(cci.cache_dir(), tmp_path / "moved")
     os.symlink(other, cci.cache_dir())
     serve(monkeypatch, ["19.3"])
-    assert cci.releases("gitlab", 1000)[0]["name"] == "19.3"  # seeded file not read
+    assert newest("gitlab", 1000) == "19.3"  # seeded file not read
     assert (other / "gitlab.json").read_text() == before  # nothing written through the link
     assert os.listdir(other) == ["gitlab.json"]
     assert cci.releases("gitlab", 1000, offline=True) is None
@@ -589,7 +596,7 @@ def test_cache_write_failure_keeps_result(repo, monkeypatch):
         raise OSError("read-only")
 
     monkeypatch.setattr(os, "replace", boom)
-    assert cci.releases("gitlab", 1000)[0]["name"] == "19.3"
+    assert newest("gitlab", 1000) == "19.3"
     assert "gitlab.json" not in os.listdir(cci.cache_dir())
     assert not [f for f in os.listdir(cci.cache_dir()) if f.startswith("tmp")]  # temp file cleaned up
 
@@ -601,7 +608,7 @@ def test_cache_dir_is_a_file(repo, monkeypatch, tmp_path):
     os.rmdir(cci.cache_dir())
     open(cci.cache_dir(), "w").close()
     serve(monkeypatch, ["19.3"])
-    assert cci.releases("gitlab", 1000)[0]["name"] == "19.3"
+    assert newest("gitlab", 1000) == "19.3"
 
 
 @pytest.mark.parametrize("value", ("oops", "[a]"))

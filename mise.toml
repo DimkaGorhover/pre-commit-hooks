@@ -11,6 +11,7 @@ ruff = "latest"
 ryl = "latest"
 shellcheck = "latest"
 shfmt = "latest"  # required by the mdformat-shfmt hook plugin
+ty = "latest"
 uv = "latest"
 
 [tool_alias]
