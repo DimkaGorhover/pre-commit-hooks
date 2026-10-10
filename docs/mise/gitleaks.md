@@ -1,8 +1,26 @@
 # gitleaks
 
-Scans the staged changes for hardcoded secrets. The upstream hook uses
-`language: golang`, so pre-commit builds gitleaks from source on first run;
-this runs the released binary instead.
+Scans the staged changes for hardcoded secrets with
+[gitleaks](https://github.com/gitleaks/gitleaks). mise installs the released
+binary, so nothing is built on first run.
+
+## Replaces
+
+The upstream hook uses `language: golang`, so pre-commit builds gitleaks from
+source on first run:
+
+```yaml
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks # or gitleaks-docker (Docker image)
+```
+
+It runs the same `gitleaks git --pre-commit --redact --staged --verbose` and
+reads the same `.gitleaks.toml`. Upstream also ships `gitleaks-system`, which
+expects gitleaks on `PATH` like the local hook below, but pins its arguments
+in `entry`. The local hook adds `--no-banner` and a size cap.
 
 ## Hook
 
