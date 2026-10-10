@@ -5,6 +5,23 @@ linter written in Rust. It replaces the Python
 [yamllint](https://github.com/adrienverge/yamllint) hook and reads the same
 `.yamllint.yaml` config.
 
+## Replaces
+
+The upstream yamllint hook installs yamllint into a Python virtualenv:
+
+```yaml
+repos:
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+        args:
+          - --no-warnings # report errors only
+```
+
+ryl is a drop-in replacement: same CLI flags, same config, no Python. Swap
+the hook for the local one below.
+
 ## Hook
 
 ```yaml
