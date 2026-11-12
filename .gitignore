@@ -4,3 +4,8 @@ __pycache__/
 .pytest_cache/
 dist/
 site/
+
+# global gitignore hides .claude/; commit only the project skills
+!.claude/
+.claude/*
+!.claude/skills/

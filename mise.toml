@@ -34,3 +34,18 @@ run = "uv run --only-group docs mkdocs build --strict"
 description = "serve the mkdocs site with live reload"
 dir = "{{config_root}}"
 run = "uv run --only-group docs mkdocs serve"
+
+[tasks."release:bump"]
+description = "set the release version in pyproject.toml, uv.lock and the docs rev: pins"
+dir = "{{config_root}}"
+shell = "bash -c"
+usage = 'arg "<version>" help="X.Y.Z, without the v prefix"'
+run = '''
+set -euo pipefail
+v="${usage_version}"
+[[ $v =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "version must be X.Y.Z, got: $v" >&2; exit 1; }
+uv version "$v"
+# only pins of this repo; docs/superpowers holds historical plans
+git ls-files -z README.md 'docs/*.md' ':!docs/superpowers' |
+  xargs -0 perl -0pi -e 's{(repo: https://github\.com/DimkaGorhover/pre-commit-hooks\n\s+rev: )[^\n]*}{${1}v'"$v"'}g'
+'''
