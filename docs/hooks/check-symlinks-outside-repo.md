@@ -8,7 +8,7 @@ the author's machine and break (or silently point somewhere else) everywhere els
 ```yaml
 repos:
   - repo: https://github.com/DimkaGorhover/pre-commit-hooks
-    rev: <commit-sha>
+    rev: v0.1.0
     hooks:
       - id: check-symlinks-outside-repo
 ```

@@ -10,7 +10,7 @@ header, so you only declare it once.
 ```yaml
 repos:
   - repo: https://github.com/DimkaGorhover/pre-commit-hooks
-    rev: <commit-sha>
+    rev: v0.1.0
     hooks:
       - id: check-yaml-schema
 ```

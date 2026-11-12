@@ -17,7 +17,7 @@ Add the repo to `.pre-commit-config.yaml` and pick the hooks you want:
 ```yaml
 repos:
   - repo: https://github.com/DimkaGorhover/pre-commit-hooks
-    rev: <commit-sha>
+    rev: v0.1.0
     hooks:
       - id: check-symlinks-outside-repo
       - id: check-agent-files-tokens
@@ -27,8 +27,8 @@ repos:
 
 !!! warning "Pin `rev`"
 
-    There are no release tags yet. Pin `rev` to a full commit SHA rather than a
-    branch name, so the hooks don't change under you.
+    Pin `rev` to a release tag rather than a branch name, so the hooks don't
+    change under you. `prek auto-update` bumps it to the latest release.
 
 Then install the git hook:
 

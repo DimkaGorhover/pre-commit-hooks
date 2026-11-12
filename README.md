@@ -25,7 +25,7 @@ Add the repo to `.pre-commit-config.yaml` and pick the hooks you want:
 ```yaml
 repos:
   - repo: https://github.com/DimkaGorhover/pre-commit-hooks
-    rev: <commit-sha>  # no release tags yet, pin a full commit SHA
+    rev: v0.1.0
     hooks:
       - id: check-symlinks-outside-repo
       - id: check-agent-files-tokens

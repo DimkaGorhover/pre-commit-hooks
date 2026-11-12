@@ -11,7 +11,7 @@ review and stage the fix.
 ```yaml
 repos:
   - repo: https://github.com/DimkaGorhover/pre-commit-hooks
-    rev: <commit-sha>
+    rev: v0.1.0
     hooks:
       - id: check-catalog-info
 ```

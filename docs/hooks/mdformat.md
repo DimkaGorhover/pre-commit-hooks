@@ -9,7 +9,7 @@ between projects, where the plugin list had started to drift.
 ```yaml
 repos:
   - repo: https://github.com/DimkaGorhover/pre-commit-hooks
-    rev: <commit-sha>
+    rev: v0.1.0
     hooks:
       - id: mdformat
 ```
