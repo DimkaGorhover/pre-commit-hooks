@@ -4,6 +4,7 @@
   description: forbids symlinks whose target resolves outside the repository directory.
   entry: check-symlinks-outside-repo
   language: python
+  require_serial: true # one run: a single csv header / tree, not one per batch
   types:
     - symlink
   stages:
