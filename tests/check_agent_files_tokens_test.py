@@ -63,3 +63,17 @@ def test_main_reports_all_files(tmpdir):
     assert result.exit_code == 1
     assert "AGENTS.md" in result.output
     assert "GEMINI.md" not in result.output
+
+
+def test_main_encoding_unavailable(tmpdir, monkeypatch):
+    import tiktoken
+
+    def offline(name):
+        raise OSError("no network")
+
+    monkeypatch.setattr(tiktoken, "get_encoding", offline)
+    f = tmpdir.join("AGENTS.md")
+    f.write("hi\n")
+    result = CliRunner().invoke(main, (str(f),))
+    assert result.exit_code == 1
+    assert "cannot load tiktoken encoding o200k_base" in result.output

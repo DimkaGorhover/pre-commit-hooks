@@ -15,7 +15,11 @@ DEFAULT_MAX_TOKENS = 2500
 @click.option("--encoding", type=click.Choice(tiktoken.list_encoding_names()), default="o200k_base", show_default=True)
 def main(filenames: tuple[str, ...], max_tokens: int, encoding: str) -> int:
     """Checks AI agent guideline files (AGENTS.md, CLAUDE.md, ...) stay under a token budget."""
-    enc = tiktoken.get_encoding(encoding)
+    try:
+        enc = tiktoken.get_encoding(encoding)
+    except OSError as e:  # first use downloads the encoding file
+        click.echo(f"cannot load tiktoken encoding {encoding} (downloaded on first use, then cached): {e}")
+        sys.exit(1)
     retv = 0
     for filename in filenames:
         with open(filename, encoding="utf-8") as f:

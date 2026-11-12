@@ -53,6 +53,12 @@ other files, override `files:` in your config.
 The default of 2500 follows Anthropic's advice to keep `CLAUDE.md` under ~200
 lines, at roughly 12 tokens per markdown line.
 
+!!! warning "Needs network on first use"
+
+    tiktoken downloads the encoding file on first use and caches it
+    (`TIKTOKEN_CACHE_DIR`). Offline with an empty cache, the hook fails with
+    `cannot load tiktoken encoding ...`.
+
 !!! note "The count is an approximation"
 
     tiktoken encodings are OpenAI's, not every vendor's tokenizer, but they are
