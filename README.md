@@ -42,7 +42,7 @@ prek install  # or: pre-commit install
 ## Development
 
 ```sh
-uv run pytest        # run tests
+mise run test        # run tests
 mise run pre-commit  # lint the repo with its own hooks config
 mise run docs:serve  # preview the docs on http://127.0.0.1:8000
 ```
