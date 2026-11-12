@@ -1,7 +1,7 @@
 site_name: Pre-commit Hooks
 site_description: My pre-commit hooks.
 repo_url: https://github.com/DimkaGorhover/pre-commit-hooks
-edit_uri: edit/master/docs/
+edit_uri: edit/main/docs/
 strict: true
 
 theme:
