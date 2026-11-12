@@ -75,6 +75,10 @@ def write_cache(path: str, data: bytes) -> None:
                 os.remove(tmp)
 
 
+# product -> fetch error, for the rest of this run
+FETCH_FAILED: dict[str, OSError] = {}
+
+
 def releases(product: str, ttl: int, offline: bool = False) -> list[dict] | None:
     """Releases of `product`, newest first.
 
@@ -98,9 +102,12 @@ def releases(product: str, ttl: int, offline: bool = False) -> list[dict] | None
     if offline:
         return cached
     try:
+        if product in FETCH_FAILED:  # don't wait out the timeout again for every entity
+            raise FETCH_FAILED[product]
         with urllib.request.urlopen(API.format(product), timeout=30) as r:
             data = r.read()
     except OSError as e:  # HTTPError and URLError are OSErrors
+        FETCH_FAILED[product] = e
         if getattr(e, "code", None) == 404:
             raise UnknownProduct(product) from None
         if cached is not None:

@@ -26,6 +26,15 @@ CYCLES = {
     "terraform": ["1.16", "1.15"],
     "gitlab": ["19.3", "19.2"],
 }
+
+
+@pytest.fixture(autouse=True)
+def reset_fetch_failed():
+    cci.FETCH_FAILED.clear()
+    yield
+    cci.FETCH_FAILED.clear()
+
+
 COMPONENT = """\
 ---
 apiVersion: backstage.io/v1alpha1
@@ -637,3 +646,18 @@ def test_non_ascii_filename(repo):
 def test_terraform_ignores_commented_required_version(repo):
     write(repo, {"main.tf": '# required_version = "1.0"\nterraform {\n  required_version = "~> 1.15.0"\n}\n'})
     assert cci.detect(str(repo), cci.repo_files(str(repo))) == {"terraform": "~> 1.15.0"}
+
+
+def test_releases_remembers_fetch_failure(tmp_path, monkeypatch):
+    monkeypatch.setattr(tempfile, "tempdir", str(tmp_path))
+    calls = []
+
+    def unreachable(url, timeout):
+        calls.append(url)
+        raise urllib.error.URLError("blackholed")
+
+    monkeypatch.setattr(urllib.request, "urlopen", unreachable)
+    for _ in range(3):
+        with pytest.raises(urllib.error.URLError):
+            cci.releases("python", 1000)
+    assert len(calls) == 1
