@@ -12,6 +12,7 @@ import click
 import jsonschema
 import yaml
 from referencing import Registry, Resource
+from referencing.exceptions import Unresolvable
 
 HEADER = re.compile(r"^#\s*yaml-language-server:\s*\$schema=(\S+)\s*$")
 
@@ -96,14 +97,22 @@ def main(filenames: tuple[str, ...]) -> int:
         for filename in files:
             try:
                 with open(filename, encoding="utf-8") as f:
-                    instance = yaml.load(f, Loader)
+                    docs = list(yaml.load_all(f, Loader)) or [None]  # empty file: one null doc
             except yaml.YAMLError as e:
                 click.echo(f"{filename}: {e}")
                 retv = 1
                 continue
-            for error in validator.iter_errors(instance):
-                click.echo(f"{filename}::{error.json_path}: {error.message}")
-                retv = 1
+            for i, instance in enumerate(docs, 1):
+                where = f"{filename}" if len(docs) == 1 else f"{filename}[doc {i}]"
+                try:
+                    errors = list(validator.iter_errors(instance))
+                except Unresolvable as e:  # $ref that can't be fetched or found
+                    click.echo(f"{where}: cannot resolve $ref: {e}")
+                    retv = 1
+                    continue
+                for error in errors:
+                    click.echo(f"{where}::{error.json_path}: {error.message}")
+                    retv = 1
     sys.exit(retv)
 
 

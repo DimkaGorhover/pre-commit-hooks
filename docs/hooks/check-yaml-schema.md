@@ -33,6 +33,10 @@ Runs on the `pre-commit`, `pre-push` and `manual` stages, on YAML files.
 - Files are grouped by schema and checked with
     [check-jsonschema](https://github.com/python-jsonschema/check-jsonschema),
     which runs once per schema.
+- Multi-document files (`---`) are checked document by document, and errors
+    name the document (`f.yaml[doc 2]::$.name: ...`).
+- A `$ref` that can't be fetched or found fails the file with
+    `cannot resolve $ref`.
 
 ## Example
 
