@@ -3,6 +3,9 @@
 [settings]
 minimum_release_age = "7d"
 
+[env]
+NO_MKDOCS_2_WARNING = "1"  # mkdocs is pinned <2 in pyproject.toml
+
 [tools]
 checkov = "latest"
 gitleaks = "latest"
@@ -19,16 +22,15 @@ ryl = "github:owenlamont/ryl"
 
 [tasks.pre-commit]
 description = "run pre-commit hooks on all files"
-run = "prek run --all-files --cd {{config_root}}"
+dir = "{{config_root}}"
+run = "prek run --all-files"
 
 [tasks."docs:build"]
 description = "build the mkdocs site into site/"
 dir = "{{config_root}}"
 run = "uv run --only-group docs mkdocs build --strict"
-env = { NO_MKDOCS_2_WARNING = "1" }  # mkdocs is pinned <2 in pyproject.toml
 
 [tasks."docs:serve"]
 description = "serve the mkdocs site with live reload"
 dir = "{{config_root}}"
 run = "uv run --only-group docs mkdocs serve"
-env = { NO_MKDOCS_2_WARNING = "1" }  # mkdocs is pinned <2 in pyproject.toml
